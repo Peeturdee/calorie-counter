@@ -20,7 +20,6 @@
     --snacks: #c47af5;
     --booze: #f5c642;
     --danger: #f56060;
-    --goal: 2000;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,7 +32,6 @@
     padding: 0 0 60px;
   }
 
-  /* ── Header ── */
   header {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
@@ -86,7 +84,6 @@
     text-align: center;
   }
 
-  /* ── Progress bar ── */
   .progress-block {
     display: flex;
     align-items: center;
@@ -123,7 +120,6 @@
 
   .progress-label span { color: var(--text); font-size: 1rem; }
 
-  /* ── Goal setter ── */
   .goal-row {
     display: flex;
     align-items: center;
@@ -144,7 +140,6 @@
     text-align: center;
   }
 
-  /* ── Main layout ── */
   main {
     max-width: 720px;
     margin: 0 auto;
@@ -153,12 +148,11 @@
     gap: 16px;
   }
 
-  /* ── Meal section ── */
   .meal-section {
     background: var(--surface);
     border-radius: 14px;
     border: 1px solid var(--border);
-    overflow: hidden;
+    overflow: visible;
   }
 
   .meal-header {
@@ -168,6 +162,7 @@
     padding: 14px 18px;
     cursor: pointer;
     user-select: none;
+    border-radius: 14px;
   }
 
   .meal-header:hover { background: var(--surface2); }
@@ -195,9 +190,9 @@
   .meal-body {
     border-top: 1px solid var(--border);
     padding: 14px 18px;
+    border-radius: 0 0 14px 14px;
   }
 
-  /* ── Food items list ── */
   .food-list {
     display: flex;
     flex-direction: column;
@@ -239,14 +234,16 @@
   }
   .del-btn:hover { color: var(--danger); }
 
-  /* ── Add food form ── */
-  .add-row {
+  /* ── Search add row ── */
+  .add-area { position: relative; }
+
+  .search-row {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
   }
 
-  .add-row input {
+  .search-row input {
     background: var(--surface2);
     border: 1px solid var(--border);
     color: var(--text);
@@ -256,25 +253,91 @@
     outline: none;
     transition: border-color .2s;
   }
+  .search-row input:focus { border-color: #5a5af0; }
 
-  .add-row input:focus { border-color: #5a5af0; }
+  .inp-search { flex: 2; min-width: 140px; }
+  .inp-portion { flex: 1; min-width: 80px; max-width: 100px; }
+  .inp-cal-manual { flex: 1; min-width: 70px; max-width: 95px; }
 
-  .add-row .inp-name { flex: 2; min-width: 120px; }
-  .add-row .inp-cal  { flex: 1; min-width: 80px; max-width: 110px; }
-
-  .add-btn {
+  .search-btn {
     background: #3a3af0;
     border: none;
     color: #fff;
     border-radius: 8px;
-    padding: 8px 16px;
+    padding: 8px 14px;
     font-size: .875rem;
     font-weight: 600;
     cursor: pointer;
     transition: background .15s;
     white-space: nowrap;
   }
-  .add-btn:hover { background: #5555f8; }
+  .search-btn:hover { background: #5555f8; }
+
+  .add-btn {
+    background: #2a7a4a;
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: .875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s;
+    white-space: nowrap;
+  }
+  .add-btn:hover { background: #38a060; }
+
+  /* ── Lookup results dropdown ── */
+  .lookup-results {
+    position: absolute;
+    left: 0; right: 0;
+    top: calc(100% + 6px);
+    background: #1e1e2e;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    z-index: 200;
+    box-shadow: 0 8px 32px rgba(0,0,0,.5);
+    overflow: hidden;
+    max-height: 260px;
+    overflow-y: auto;
+  }
+
+  .lookup-item {
+    padding: 10px 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: .85rem;
+    transition: background .12s;
+  }
+  .lookup-item:last-child { border-bottom: none; }
+  .lookup-item:hover { background: var(--surface2); }
+
+  .lookup-name { flex: 1; }
+  .lookup-brand { font-size: .75rem; color: var(--muted); }
+  .lookup-kcal {
+    font-weight: 700;
+    color: #4aaf7a;
+    white-space: nowrap;
+    font-size: .85rem;
+  }
+
+  .lookup-status {
+    padding: 12px 14px;
+    font-size: .82rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* ── Help hint ── */
+  .search-hint {
+    font-size: .72rem;
+    color: var(--muted);
+    margin-top: 6px;
+  }
 
   /* ── Day summary ── */
   .day-summary {
@@ -302,14 +365,9 @@
     color: var(--muted);
   }
 
-  .summary-value {
-    font-size: 1.3rem;
-    font-weight: 700;
-  }
-
+  .summary-value { font-size: 1.3rem; font-weight: 700; }
   .summary-item.total .summary-value { font-size: 1.6rem; }
 
-  /* ── Empty state ── */
   .empty {
     color: var(--muted);
     font-size: .82rem;
@@ -317,18 +375,9 @@
     margin-bottom: 10px;
   }
 
-  /* ── Collapse chevron ── */
-  .chevron {
-    color: var(--muted);
-    font-size: .7rem;
-    transition: transform .2s;
-    flex-shrink: 0;
-  }
+  .chevron { color: var(--muted); font-size: .7rem; transition: transform .2s; flex-shrink: 0; }
   .chevron.open { transform: rotate(180deg); }
 
-  ::placeholder { color: var(--muted); opacity: .7; }
-
-  /* ── Shame message ── */
   .shame-msg {
     background: #2a0a0a;
     border: 1px solid #7a1a1a;
@@ -346,6 +395,8 @@
     from { opacity: 0; transform: scale(.97); }
     to   { opacity: 1; transform: scale(1); }
   }
+
+  ::placeholder { color: var(--muted); opacity: .7; }
 </style>
 </head>
 <body>
@@ -354,28 +405,24 @@
   <div class="header-top">
     <div class="app-title">Tubby Pete's Calorie Counter</div>
     <div class="date-nav">
-      <button id="prev-day" title="Previous day">‹</button>
+      <button id="prev-day">‹</button>
       <div id="date-display"></div>
-      <button id="next-day" title="Next day">›</button>
+      <button id="next-day">›</button>
     </div>
   </div>
-
   <div class="progress-block">
     <div class="progress-bar-wrap">
       <div class="progress-bar-fill" id="progress-fill"></div>
     </div>
     <div class="progress-label"><span id="total-display">0</span> / <span id="goal-display">2000</span> kcal</div>
   </div>
-
   <div class="goal-row">
     Daily goal:
     <input type="number" id="goal-input" value="2000" min="100" max="9999"> kcal
   </div>
 </header>
 
-<main id="main-content">
-  <!-- Sections injected by JS -->
-</main>
+<main id="main-content"></main>
 
 <script>
 const MEALS = [
@@ -390,7 +437,7 @@ let currentDate = todayKey();
 let goal = parseInt(localStorage.getItem('calGoal') || '2000', 10);
 let openSections = new Set(['breakfast','lunch','dinner','snacks','booze']);
 
-// ── Date helpers ────────────────────────────────────────────
+// ── Date helpers ─────────────────────────────────────────────
 
 function todayKey() {
   const d = new Date();
@@ -415,15 +462,11 @@ function formatDate(key) {
   return dt.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
 }
 
-// ── Storage ─────────────────────────────────────────────────
+// ── Storage ──────────────────────────────────────────────────
 
 function loadDay(dateKey) {
   const raw = localStorage.getItem('cal_' + dateKey);
-  if (!raw) {
-    const data = {};
-    MEALS.forEach(m => data[m.id] = []);
-    return data;
-  }
+  if (!raw) { const d = {}; MEALS.forEach(m => d[m.id] = []); return d; }
   return JSON.parse(raw);
 }
 
@@ -431,17 +474,71 @@ function saveDay(dateKey, data) {
   localStorage.setItem('cal_' + dateKey, JSON.stringify(data));
 }
 
-// ── Rendering ────────────────────────────────────────────────
+// ── Nutrition lookup ─────────────────────────────────────────
+
+let searchDebounce = {};
+
+async function lookupFood(query, portionG, mealId) {
+  const resultsEl = document.getElementById('lookup-' + mealId);
+  if (!resultsEl) return;
+  if (!query || query.length < 2) { resultsEl.innerHTML = ''; return; }
+
+  resultsEl.innerHTML = '<div class="lookup-status">Searching…</div>';
+
+  try {
+    const url = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=8&fields=product_name,brands,nutriments`;
+    const res = await fetch(url);
+    const json = await res.json();
+
+    const products = (json.products || []).filter(p =>
+      p.product_name &&
+      p.nutriments &&
+      (p.nutriments['energy-kcal_100g'] || p.nutriments['energy-kcal']) > 0
+    );
+
+    if (!products.length) {
+      resultsEl.innerHTML = '<div class="lookup-status">No results — enter kcal manually</div>';
+      return;
+    }
+
+    const portion = parseFloat(portionG) || 100;
+
+    resultsEl.innerHTML = products.map((p, i) => {
+      const kcalPer100 = p.nutriments['energy-kcal_100g'] || p.nutriments['energy-kcal'] || 0;
+      const kcalTotal = Math.round((kcalPer100 / 100) * portion);
+      const brand = p.brands ? `<span class="lookup-brand"> · ${p.brands.split(',')[0]}</span>` : '';
+      return `<div class="lookup-item" data-idx="${i}" data-kcal="${kcalTotal}" data-name="${escAttr(p.product_name)}" data-meal="${mealId}">
+        <div class="lookup-name">${escHtml(p.product_name)}${brand}</div>
+        <div class="lookup-kcal">${kcalTotal} kcal</div>
+      </div>`;
+    }).join('');
+
+    // Attach click handlers to results
+    resultsEl.querySelectorAll('.lookup-item').forEach(item => {
+      item.addEventListener('mousedown', e => {
+        e.preventDefault();
+        const calEl = document.querySelector(`.inp-cal-manual[data-meal="${mealId}"]`);
+        const nameEl = document.querySelector(`.inp-search[data-meal="${mealId}"]`);
+        if (calEl) calEl.value = item.dataset.kcal;
+        if (nameEl) nameEl.value = item.dataset.name;
+        resultsEl.innerHTML = '';
+      });
+    });
+
+  } catch(err) {
+    resultsEl.innerHTML = '<div class="lookup-status">Lookup failed — enter kcal manually</div>';
+  }
+}
+
+// ── Render ───────────────────────────────────────────────────
 
 function render() {
   const data = loadDay(currentDate);
   const main = document.getElementById('main-content');
   main.innerHTML = '';
 
-  // Date display
   document.getElementById('date-display').textContent = formatDate(currentDate);
 
-  // Meal sections
   MEALS.forEach(meal => {
     const items = data[meal.id] || [];
     const mealTotal = items.reduce((s, i) => s + i.cal, 0);
@@ -463,28 +560,33 @@ function render() {
       </div>
       ${isOpen ? `
       <div class="meal-body">
-        <div class="food-list" id="list-${meal.id}">
+        <div class="food-list">
           ${items.length === 0 ? '<div class="empty">Nothing logged yet</div>' :
             items.map((item, idx) => `
               <div class="food-item">
                 <div class="food-name">${escHtml(item.name)}</div>
                 <div class="food-cal"><span>${item.cal}</span> kcal</div>
-                <button class="del-btn" data-meal="${meal.id}" data-idx="${idx}" title="Remove">✕</button>
+                <button class="del-btn" data-meal="${meal.id}" data-idx="${idx}">✕</button>
               </div>
-            `).join('')
-          }
+            `).join('')}
         </div>
-        <div class="add-row">
-          <input class="inp-name" type="text" placeholder="Food name" data-meal="${meal.id}" maxlength="80">
-          <input class="inp-cal" type="number" placeholder="kcal" data-meal="${meal.id}" min="0" max="99999">
-          <button class="add-btn" data-meal="${meal.id}">Add</button>
+
+        <div class="add-area">
+          <div class="search-row">
+            <input class="inp-search" type="text" placeholder="Search food…" data-meal="${meal.id}" autocomplete="off">
+            <input class="inp-portion" type="number" placeholder="g / ml" data-meal="${meal.id}" min="1" max="9999" value="100">
+            <input class="inp-cal-manual" type="number" placeholder="kcal" data-meal="${meal.id}" min="0" max="99999">
+            <button class="add-btn" data-meal="${meal.id}">Add</button>
+          </div>
+          <div class="search-hint">Type to search, pick a result — or enter kcal manually and hit Add</div>
+          <div class="lookup-results" id="lookup-${meal.id}"></div>
         </div>
       </div>` : ''}
     `;
     main.appendChild(section);
   });
 
-  // Day summary
+  // Summary
   const allItems = MEALS.flatMap(m => data[m.id] || []);
   const grandTotal = allItems.reduce((s, i) => s + i.cal, 0);
   const remaining = goal - grandTotal;
@@ -498,11 +600,10 @@ function render() {
     </div>
     ${MEALS.map(m => {
       const t = (data[m.id]||[]).reduce((s,i)=>s+i.cal,0);
-      return t > 0 ? `
-        <div class="summary-item">
-          <div class="summary-label" style="color:${m.color}">${m.label}</div>
-          <div class="summary-value" style="color:${m.color}">${t}<small style="font-size:.65em;font-weight:400;opacity:.7"> kcal</small></div>
-        </div>` : '';
+      return t > 0 ? `<div class="summary-item">
+        <div class="summary-label" style="color:${m.color}">${m.label}</div>
+        <div class="summary-value" style="color:${m.color}">${t}<small style="font-size:.65em;font-weight:400;opacity:.7"> kcal</small></div>
+      </div>` : '';
     }).join('')}
     <div class="summary-item" style="margin-left:auto;text-align:right">
       <div class="summary-label">${remaining >= 0 ? 'Remaining' : 'Over goal'}</div>
@@ -513,7 +614,6 @@ function render() {
   `;
   main.appendChild(summaryEl);
 
-  // Shame message
   if (grandTotal > goal) {
     const shame = document.createElement('div');
     shame.className = 'shame-msg';
@@ -521,7 +621,6 @@ function render() {
     main.appendChild(shame);
   }
 
-  // Update header
   updateProgress(grandTotal);
   attachEvents(data);
 }
@@ -536,107 +635,109 @@ function updateProgress(total) {
 }
 
 function escHtml(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escAttr(str) {
+  return String(str).replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
-// ── Events ───────────────────────────────────────────────────
+// ── Events ────────────────────────────────────────────────────
 
 function attachEvents(data) {
-  // Collapse toggle
+  // Collapse
   document.querySelectorAll('.meal-header').forEach(el => {
     el.addEventListener('click', () => {
       const meal = el.dataset.meal;
-      if (openSections.has(meal)) openSections.delete(meal);
-      else openSections.add(meal);
+      openSections.has(meal) ? openSections.delete(meal) : openSections.add(meal);
       render();
     });
   });
 
-  // Add buttons
+  // Delete
+  document.querySelectorAll('.del-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      data[btn.dataset.meal].splice(parseInt(btn.dataset.idx,10), 1);
+      saveDay(currentDate, data);
+      render();
+    });
+  });
+
+  // Add
   document.querySelectorAll('.add-btn').forEach(btn => {
     btn.addEventListener('click', () => addFood(btn.dataset.meal, data));
   });
 
-  // Enter key in inputs
-  document.querySelectorAll('.inp-cal').forEach(inp => {
-    inp.addEventListener('keydown', e => {
-      if (e.key === 'Enter') addFood(inp.dataset.meal, data);
+  // Search input — debounced lookup
+  document.querySelectorAll('.inp-search').forEach(inp => {
+    inp.addEventListener('input', () => {
+      const mealId = inp.dataset.meal;
+      const portion = document.querySelector(`.inp-portion[data-meal="${mealId}"]`)?.value;
+      clearTimeout(searchDebounce[mealId]);
+      searchDebounce[mealId] = setTimeout(() => {
+        lookupFood(inp.value.trim(), portion, mealId);
+      }, 400);
     });
-  });
-  document.querySelectorAll('.inp-name').forEach(inp => {
+
+    // Hide dropdown on blur (slight delay to allow click)
+    inp.addEventListener('blur', () => {
+      const mealId = inp.dataset.meal;
+      setTimeout(() => {
+        const el = document.getElementById('lookup-' + mealId);
+        if (el) el.innerHTML = '';
+      }, 200);
+    });
+
     inp.addEventListener('keydown', e => {
       if (e.key === 'Enter') {
-        const calInp = document.querySelector(`.inp-cal[data-meal="${inp.dataset.meal}"]`);
-        if (calInp) calInp.focus();
+        const mealId = inp.dataset.meal;
+        document.querySelector(`.inp-cal-manual[data-meal="${mealId}"]`)?.focus();
       }
     });
   });
 
-  // Delete buttons
-  document.querySelectorAll('.del-btn').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      const meal = btn.dataset.meal;
-      const idx = parseInt(btn.dataset.idx, 10);
-      data[meal].splice(idx, 1);
-      saveDay(currentDate, data);
-      render();
+  // Portion change re-triggers search
+  document.querySelectorAll('.inp-portion').forEach(inp => {
+    inp.addEventListener('change', () => {
+      const mealId = inp.dataset.meal;
+      const searchEl = document.querySelector(`.inp-search[data-meal="${mealId}"]`);
+      if (searchEl?.value.trim().length > 1) {
+        lookupFood(searchEl.value.trim(), inp.value, mealId);
+      }
+    });
+  });
+
+  // Enter on kcal field adds food
+  document.querySelectorAll('.inp-cal-manual').forEach(inp => {
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter') addFood(inp.dataset.meal, data);
     });
   });
 }
 
 function addFood(mealId, data) {
-  const nameEl = document.querySelector(`.inp-name[data-meal="${mealId}"]`);
-  const calEl  = document.querySelector(`.inp-cal[data-meal="${mealId}"]`);
+  const nameEl = document.querySelector(`.inp-search[data-meal="${mealId}"]`);
+  const calEl  = document.querySelector(`.inp-cal-manual[data-meal="${mealId}"]`);
   const name = nameEl?.value.trim();
   const cal  = parseInt(calEl?.value, 10);
-  if (!name || isNaN(cal) || cal < 0) {
-    if (nameEl) nameEl.focus();
-    return;
-  }
+  if (!name || isNaN(cal) || cal < 0) { nameEl?.focus(); return; }
   data[mealId].push({ name, cal });
   saveDay(currentDate, data);
   render();
 }
 
-// ── Nav ──────────────────────────────────────────────────────
+// ── Nav & goal ────────────────────────────────────────────────
 
-document.getElementById('prev-day').addEventListener('click', () => {
-  currentDate = shiftDate(currentDate, -1);
-  render();
-});
-
-document.getElementById('next-day').addEventListener('click', () => {
-  currentDate = shiftDate(currentDate, 1);
-});
-
-document.getElementById('goal-input').addEventListener('change', e => {
-  const v = parseInt(e.target.value, 10);
-  if (!isNaN(v) && v > 0) {
-    goal = v;
-    localStorage.setItem('calGoal', goal);
-    render();
-  }
-});
+document.getElementById('prev-day').onclick = () => { currentDate = shiftDate(currentDate,-1); render(); };
+document.getElementById('next-day').onclick = () => { currentDate = shiftDate(currentDate, 1); render(); };
 
 document.getElementById('goal-input').value = goal;
-
-// ── Init ─────────────────────────────────────────────────────
+document.getElementById('goal-input').addEventListener('change', e => {
+  const v = parseInt(e.target.value, 10);
+  if (!isNaN(v) && v > 0) { goal = v; localStorage.setItem('calGoal', goal); render(); }
+});
 
 render();
-
-// Update next-day button click: re-attach after setting date
-document.getElementById('next-day').addEventListener('click', () => {
-  currentDate = shiftDate(currentDate, 1);
-  render();
-}, { once: false });
-
-// Re-wire (the two listeners above will double-fire, clean up)
-// Simpler: replace with a single clean setup
-(function fixNav() {
-  document.getElementById('prev-day').onclick = () => { currentDate = shiftDate(currentDate,-1); render(); };
-  document.getElementById('next-day').onclick = () => { currentDate = shiftDate(currentDate, 1); render(); };
-})();
 </script>
 </body>
 </html>
